@@ -34,6 +34,19 @@ def unique_chars?(str)
     return true
 end
 
+def unique_chars_solution?(string)
+  already_seen = []
+
+  string.each_char do |char|
+    if already_seen.include?(char)
+      return false
+    end
+    already_seen << char
+  end
+
+  return true
+end
+
 def dupe_indices(arr)
     hash = {}
     arr.each_with_index do |el, i|
@@ -52,6 +65,16 @@ def dupe_indices(arr)
     return hash
 end
 
+def dupe_indices_solution(array)
+  indices = Hash.new { |h, k| h[k] = [] }
+
+  array.each_with_index do |ele, i|
+    indices[ele] << i
+  end
+
+  return indices.select { |ele, arr| arr.length > 1 }
+end
+
 def ana_array(arr_1, arr_2)
   arr_1.each do |el|
     if !arr_2.include?(el)
@@ -64,4 +87,18 @@ def ana_array(arr_1, arr_2)
     end
   end
   return true
+end
+
+def ele_count(arr)
+  count = Hash.new(0)
+
+  arr.each { |ele| count[ele] += 1 }
+
+  return count
+end
+
+def ana_array_solution(arr_1, arr_2)
+  count_1 = ele_count(arr_1)
+  count_2 = ele_count(arr_2)
+  return count_1 == count_2
 end
