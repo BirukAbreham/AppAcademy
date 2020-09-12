@@ -4,12 +4,11 @@ class Game
   
   attr_reader :current_player, :previous_player
 
-  def initialize(fragment='', player_one, player_two)
+  def initialize(fragment='', *players)
     @fragment = fragment
-    @player_one = Player.new(player_one)
-    @player_two = Player.new(player_two)
-    @current_player = @player_one
-    @previous_player = @player_two
+    @players = players.map { |player| Player.new(player) }
+    @current_player = @players[0]
+    @previous_player = @players[-1]
 
     @dictionary = Hash.new(true)
 
@@ -21,12 +20,15 @@ class Game
     end
 
     @losses = Hash.new { |hash, key| hash[key] = "" }
-    @losses[@player_one.name] = ""
-    @losses[@player_two.name] = ""
+    @players.each do |player|
+      @losses[player.name] = ""
+    end
   end
 
   def next_player!
-    @current_player, @previous_player = @previous_player, @current_player
+    @players.rotate!(1)
+    @current_player = @players[0]
+    @previous_player = @players[-1]
   end
 
   def take_turn(player)
@@ -67,25 +69,35 @@ class Game
 
   def play_round
     until @dictionary.has_key?(@fragment)
-      puts "Word fragment <===> #{@fragment}\n"
+      puts "Word fragment < -- > #{@fragment}\n"
       self.take_turn(self.current_player)
       self.next_player!
     end
 
     self.record(self.previous_player)
+    self.eliminate_player
+  end
+
+  def eliminate_player
+    @losses.each do |player_name, loss|
+      if loss == "GHOST"
+        @losses.delete(player_name)
+        @players = @players.select { |player| player.name != player_name }
+        @previous_player = @players[-1]
+      end
+    end
   end
 
   def run
-    until @losses.any? { |player, loss| loss.length == 5 }
-      self.print_result_board
+    until @players.length == 1
+      self.display_standings
       @fragment = ""
       self.play_round
     end
-    winner = @losses.select { |player, loss| loss.length != 5 }
-    puts "***   Player #{winner.keys[0]} winns the game   ***"
+    puts "***   Player #{@players[0].name} winns the game   ***"
   end
 
-  def print_result_board
+  def display_standings
     puts "*"*30
     puts " ".ljust(10," ")+"Result Board"+" ".ljust(10," ")
     puts "*"*30
