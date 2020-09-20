@@ -2,7 +2,6 @@
 class WordChainer
 
   def initialize(dictionary_file)
-
     raise "File does not exits" if !File.exist?(dictionary_file)
 
     file = File.open(dictionary_file)
@@ -12,7 +11,6 @@ class WordChainer
     @dictionary = line_arr.to_set
     @current_words = []
     @all_seen_words = []
-
   end
 
   def adjacent_words(word)
@@ -36,11 +34,11 @@ class WordChainer
     @all_seen_words << source
     until @current_words.empty?
       new_current_words = []
-      @current_words.each do |word|
-        self.adjacent_words(word).each do |adj|
-          if !@all_seen_words.include?(adj)
-            new_current_words << adj
-            @all_seen_words << adj
+      @current_words.each do |current_word|
+        self.adjacent_words(current_word).each do |adj_word|
+          unless @all_seen_words.include?(adj_word)
+            new_current_words << adj_word
+            @all_seen_words << adj_word
           end
         end
       end
