@@ -21,9 +21,6 @@ class KnightPathFinder
     self.build_move_tree
   end
 
-  def find_path(end_pos)
-  end
-
   def build_move_tree
     queue = [@root_node]
     until queue.empty?
@@ -35,6 +32,20 @@ class KnightPathFinder
       end
       queue = [ *queue, *possible_nodes ]
     end
+  end
+
+  def find_path(end_pos)
+    bfs_node = @root_node.bfs(end_pos)
+    return trace_path_back(bfs_node)
+  end
+
+  def trace_path_back(trace)
+    trace_path = [trace.value]
+    until trace.parent == nil
+      trace_path.unshift(trace.parent.value)
+      trace = trace.parent
+    end
+    trace_path
   end
 
   def new_move_positions(pos)
