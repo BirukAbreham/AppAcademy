@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+
+require 'launchy'
+
+def start_url_shorthener
+  begin
+    puts "Input your email: "
+    print ">"
+    email = gets.chomp
+    if User.exists?(:email => email)
+      user = User.find_by(:email => email)
+      choose = user_action
+      if choose == "0"
+        puts "Type in your long url"
+        print ">"
+        long_url = gets.chomp
+        sh = ShorthenedUrl.create_shorthened!(user, long_url)
+        puts "Short url is: #{sh.short_url}"
+        puts "Goodbye!"
+      else
+        puts "Type in the shortened URL"
+        print ">"
+        short_url = gets.chomp
+        if ShorthenedUrl.exists?(:short_url => short_url)
+          sh = ShorthenedUrl.find_by(:short_url => short_url)
+          puts "user: #{user}"
+          pust "sh_obj: #{sh}" 
+          Visit.record_visit!(user, sh)
+          puts "Launching #{sh.long_url} ..."
+          Launchy.open(sh.long_url)
+          puts "Goodbye!"
+        else
+          puts "No short url by the given value ..."
+          puts "Goodbye!"
+        end
+      end
+    else
+      raise "User does not exist"
+    end
+  rescue => exception
+    retry
+  end
+end
+
+def user_action
+  puts "What do you want to do?"
+  puts "0. Create shortened URL"
+  puts "1. Visit shortened URL"
+  print ">"
+  choose = gets.chomp
+  return choose
+end
+
+if __FILE__ == $PROGRAM_NAME
+  start_url_shorthener
+end
