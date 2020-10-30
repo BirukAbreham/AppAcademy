@@ -75,3 +75,27 @@ comment_thr = Comment.create!({
   user_id: user_two.id,
   artwork_id: art_two.id
 })
+
+like_one = Like.create!({
+  user_id: user_th.id,
+  likeable_id: art_one.id,
+  likeable_type: 'Artwork'
+})
+
+like_two = Like.create!({
+  user_id: user_th.id,
+  likeable_id: art_two.id,
+  likeable_type: 'Artwork'
+})
+
+like_thr = Like.create!({
+  user_id: user_th.id,
+  likeable_id: art_thr.id,
+  likeable_type: 'Artwork'
+})
+
+like_fr = Like.create!({
+  user_id: user_th.id,
+  likeable_id: comment_thr.id,
+  likeable_type: 'Comment'
+})

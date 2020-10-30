@@ -19,10 +19,30 @@ Rails.application.routes.draw do
     resources :comments, only: [:index]
   end
 
-  # nested collection route, artwork -> comments
-  get 'artworks/:artwork_id/comments', to: 'comments#index'
-
   # routes for the comments resource
   resources :comments, only: [:create, :destroy]
-  
+
+  # nested collection route, user -> like comments and artworks
+  resources :users do
+    resources :likes, only: [:index]
+  end
+
+  # nested collection route artworks
+  resources :artworks do
+    member do
+      # nested collection route, artwork -> liked users list
+      get 'likes', to: 'likes#art_liked_by'
+      # nested collection route, artwork -> comments
+      get 'comments', to: 'comments#index'
+    end
+  end
+
+  # nested collection routes comment
+  resources :comments do
+    member do
+      # nested collection route, comments -> liked users list
+      get 'likes', to: 'likes#comment_liked_by'
+    end
+  end
+
 end

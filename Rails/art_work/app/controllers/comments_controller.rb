@@ -8,8 +8,8 @@ class CommentsController < ApplicationController
       end
     end
 
-    if !params[:artwork_id].nil?
-      artwork = Artwork.find_by(id: params[:artwork_id])
+    if !params[:id].nil?
+      artwork = Artwork.find_by(id: params[:id])
       if !artwork.nil?
         render json: artwork.comments
       end

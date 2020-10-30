@@ -40,4 +40,26 @@ class User < ApplicationRecord
     primary_key: :id
   )
 
+  has_many(
+    :liked,
+    dependent: :destroy,
+    class_name: :Like,
+    foreign_key: :user_id,
+    primary_key: :id
+  )
+
+  has_many(
+    :liked_artworks,
+    through: :liked,
+    source: :likeable,
+    source_type: 'Artwork'
+  )
+
+  has_many(
+    :liked_comments,
+    through: :liked,
+    source: :likeable,
+    source_type: 'Comment'
+  )
+
 end

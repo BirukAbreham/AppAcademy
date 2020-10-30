@@ -27,4 +27,15 @@ class Comment < ApplicationRecord
     primary_key: :id
   )
 
+  # like of a comment
+  has_many :likes, :as => :likeable
+
+  # every user who liked the comment
+  has_many(
+    :users_liked,
+    through: :likes,
+    source: :user,
+    # source_type: 'User'
+  )
+
 end
