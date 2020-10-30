@@ -34,4 +34,12 @@ class Artwork < ApplicationRecord
     source: :viewers
   )
 
+  has_many(
+    :comments,
+    dependent: :destroy,
+    class_name: :Comment,
+    foreign_key: :artwork_id,
+    primary_key: :id
+  )
+
 end

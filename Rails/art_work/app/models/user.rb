@@ -32,4 +32,12 @@ class User < ApplicationRecord
     source: :artworks
   )
 
+  has_many(
+    :comments,
+    dependent: :destroy,
+    class_name: :Comment,
+    foreign_key: :user_id,
+    primary_key: :id
+  )
+
 end

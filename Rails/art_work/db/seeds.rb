@@ -6,6 +6,11 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+User.destroy_all
+Artwork.destroy_all
+ArtworkShare.destroy_all
+Comment.destroy_all
+
 user_one = User.create!({ username: 'Leonardo da Vinci' })
 user_two = User.create!({ username: 'Michelangelo' })
 user_th = User.create!({ username: 'Lucas' })
@@ -53,3 +58,20 @@ art_share_fv = ArtworkShare.create!({
   viewer_id: user_two.id
 })
 
+comment_one = Comment.create!({
+  body: 'Amazing classical artwork on the dawn of the renaissance',
+  user_id: user_th.id,
+  artwork_id: art_one.id
+})
+
+comment_two = Comment.create!({
+  body: 'A ceiling in everyones mind',
+  user_id: user_th.id,
+  artwork_id: art_thr.id
+})
+
+comment_thr = Comment.create!({
+  body: 'Art of the renaissance',
+  user_id: user_two.id,
+  artwork_id: art_two.id
+})

@@ -13,4 +13,16 @@ Rails.application.routes.draw do
 
   # routes for the artwork_shares resource
   resources :artwork_shares, only: [:create, :destroy]
+
+  # nested collection route, user -> comments
+  resources :users do
+    resources :comments, only: [:index]
+  end
+
+  # nested collection route, artwork -> comments
+  get 'artworks/:artwork_id/comments', to: 'comments#index'
+
+  # routes for the comments resource
+  resources :comments, only: [:create, :destroy]
+  
 end
