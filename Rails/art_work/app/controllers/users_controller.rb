@@ -6,17 +6,6 @@ class UsersController < ApplicationController
       render json: User.all
     else
       query_name = "%#{query_name.split(//).join('%')}%"
-      # query_name = query_name.split('')
-      # query_name = query_name.map.with_index do |val, idx|
-      #   if idx == 0
-      #     "%#{val}"
-      #   elsif idx == query_name.length - 1
-      #     "#{val}%"
-      #   else
-      #     "%#{val}%"
-      #   end
-      # end
-      # query_name = query_name.join('')
       user = User.where(['UPPER(users.username) LIKE UPPER(?)', query_name])
       render json: user
     end
