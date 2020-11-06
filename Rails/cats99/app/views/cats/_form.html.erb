@@ -1,0 +1,50 @@
+<!--
+  Things to change:
+    - action (done!)
+    - hidden input patch (done!)
+    - pre-filled values (done!)
+    - submit button (done!)
+-->
+
+<% if action == :edit %>
+  <% action_url = cat_url(cat)%>
+<% else %>
+  <% action_url = cats_url %>
+<% end %>
+
+<form action="<%= action_url %>" method="post">
+  <% if action == :edit %>
+    <input type="hidden" name="_method" value="PATCH">
+  <% end %>
+
+  <label for="name">Name: </label>
+  <input id="name" type="text" name="cat[name]" value="<%= cat.name %>">
+
+  <br>
+
+  <label for="birth_date">Birth Date: </label>
+  <input id="birth_date" type="text" name="cat[birth_date]" value="<%= cat.birth_date %>">
+
+  <br>
+
+  <label for="color">Color: </label>
+  <input id="color" type="text" name="cat[color]" value="<%= cat.color %>">
+
+  <br>
+
+  <label for="sex">Sex: </label>
+  <select id="sex" name="cat[sex]">
+    <option disabled <%= cat.sex ? "" : "selected"%>>-- Please Select --</option>
+    <option value="M" <%= cat.sex == "M" ? "selected" : ""%> >Male</option>
+    <option value="F" <%= cat.sex == "F" ? "selected" : ""%>>Female</option>
+  </select>
+
+  <br><br>
+
+  <label for="description">Description</label>
+  <textarea name="cat[description]">
+    <%= cat.description %>
+  </textarea>
+
+  <input type="submit" value="<%= action == :edit ? 'update cat' : 'add cat'%>">
+</form>
