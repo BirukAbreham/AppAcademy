@@ -8,7 +8,16 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%#= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
+  <style>
+  table, td, th {
+    border: 1px solid black;
+  }
 
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  </style>
   <body>
     <%= yield %>
   </body>

@@ -52,6 +52,9 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'pry-rails'
+
+  # Run 'bundle exec annotate' in Terminal to add helpful comments to models.
+  gem 'annotate'
 end
 
 group :test do
