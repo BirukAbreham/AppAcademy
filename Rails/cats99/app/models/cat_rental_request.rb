@@ -26,7 +26,7 @@ class CatRentalRequest < ApplicationRecord
                     starts: start_date,
                     ends: end_date,
                     starts_btn: start_date,
-                    ends_btn: end_date
+                    ends_btn: end_date,
                   )
     overlapped
   end
@@ -35,9 +35,35 @@ class CatRentalRequest < ApplicationRecord
     self.overlapping_requests.where(status: 'APPROVED')
   end
 
+  def overlapping_pending_requests
+    self.overlapping_requests.where(status: 'PENDING')
+  end
+
+  def approve!
+    self.status = "APPROVED"
+    self.save!
+    # When making several related updates to the DB,
+    # group them in a transaction
+    CatRentalRequest.transaction do
+      self.overlapping_pending_requests.each do |request|
+        request.status = "DENIED"
+        request.save!
+      end
+    end
+  end
+
+  def deny!
+    self.status = "DENIED"
+    self.save!
+  end
+
+  def pending?
+    self.status == "PENDING"
+  end
+
   private
   def does_not_overlap_approved_request
-    if self.overlapping_approved_requests.exists?
+    if self.overlapping_approved_requests.exists? || self.overlapping_pending_requests
       errors[:request_overlap] << 'Current request already overlaps with other requests'
     end
   end

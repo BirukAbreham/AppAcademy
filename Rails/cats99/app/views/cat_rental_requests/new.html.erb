@@ -2,6 +2,14 @@
   Create a New Cat Rent Request
 </h1>
 
+<% if !@error_message.nil? %>
+  <% @error_message.each do |message| %>
+    <p>
+      <%= message %>
+    </p>
+  <% end %>
+<% end %>
+
 <form action="<%= cat_rental_requests_url %>" method="post">
   
   <label for="cat">Cat: </label>
