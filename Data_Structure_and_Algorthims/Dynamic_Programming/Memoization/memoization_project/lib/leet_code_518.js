@@ -20,7 +20,20 @@
 // coinChange([10]), 10)    // => 1
 
 function coinChange(coins, amount, memo = {}) {
-  if (amount === 0) return 0;
+  if (amount === 0) return 1;
+
+  let key = `${amount}-${coins.join(",")}`;
+  if (key in memo) return memo[key];
+
+  let currentCoin = coins[coins.length - 1];
+  let total = 0;
+
+  for (let qty = 0; qty * currentCoin <= amount; qty++) {
+    total += coinChange(coins.slice(0, -1), amount - qty * currentCoin, memo);
+  }
+
+  memo[key] = total;
+  return memo[key];
 }
 
 module.exports = {
