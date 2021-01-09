@@ -156,10 +156,32 @@ function minChange(coins, amount) {
   return table.reduce((a, b) => a + b, 0);
 }
 
+function minChangeTab(coins, amount) {
+  let table = new Array(amount + 1).fill(Infinity);
+  table[0] = 0;
+
+  coins.forEach((coin) => {
+    for (let amt = 0; amt < table.length; amt++) {
+      for (let qty = 0; qty * coin <= amt; qty++) {
+        let reminder = amt - qty * coin;
+        let attempt = table[reminder] + qty;
+
+        if (attempt < table[amt]) table[amt] = attempt;
+      }
+    }
+  });
+
+  console.log(table);
+  return table[table.length - 1];
+}
+
 module.exports = {
   stepper,
   stepperTab,
   stepperMemo,
   maxNonAdjacentSum,
+  maxNonAdjacentSumTab,
+  maxNonAdjacentSumMemo,
   minChange,
+  minChangeTab,
 };
