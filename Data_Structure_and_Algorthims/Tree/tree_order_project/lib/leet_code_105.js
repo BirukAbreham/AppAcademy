@@ -31,6 +31,26 @@ function buildTree(preorder, inorder) {
   return root;
 }
 
+function buildTreeSln(preorder, inorder) {
+  if (preorder.length === 0 && inorder.length === 0) return null;
+
+  let rootVal = preorder[0];
+  let root = new TreeNode(rootVal);
+
+  let midIdx = inorder.indexOf(rootVal);
+  let leftInorder = inorder.slice(0, midIdx);
+  let rightInorder = inorder.slice(midIdx + 1);
+
+  let leftPreorder = preorder.filter((val) => leftInorder.includes(val));
+  let rightPreorder = preorder.filter((val) => rightInorder.includes(val));
+
+  root.left = buildTreeSln(leftPreorder, leftInorder);
+  root.right = buildTreeSln(rightPreorder, rightInorder);
+
+  return root;
+}
+
 module.exports = {
   buildTree,
+  buildTreeSln,
 };
