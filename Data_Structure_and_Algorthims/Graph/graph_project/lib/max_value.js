@@ -20,6 +20,17 @@ function maxValue(node) {
   return maxVal;
 }
 
+function maxValueSln(node, visited = new Set()) {
+  if (visited.has(node)) return -Infinity;
+  visited.add(node);
+
+  let neighborMaxes = node.neighbors.map((neighbor) =>
+    maxValueSln(neighbor, visited)
+  );
+  return Math.max(...neighborMaxes, node.val);
+}
+
 module.exports = {
   maxValue,
+  maxValueSln,
 };

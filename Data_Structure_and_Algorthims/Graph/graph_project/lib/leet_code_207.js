@@ -24,18 +24,45 @@
 //   1. So it is impossible.
 //
 
-function canFinish(numCourses, prerequisites) {
-  let dependce = {};
-  prerequisites.forEach((prerequest) => {
-    let key = `${prerequest[0]}`;
-    if (key in dependce) {
-      dependce[key].push(prerequest[1]);
+function buildGraph(list) {
+  let graph = {};
+
+  list.forEach((prereq) => {
+    let [course, pre] = prereq.map(String);
+    if (course in graph) {
+      graph[course].push(pre);
     } else {
-      dependce[key] = [prerequest[1]];
+      graph[course] = [pre];
+    }
+
+    if (!(pre in graph)) {
+      graph[pre] = [];
     }
   });
 
-  return dependce;
+  return graph;
+}
+
+function canFinish(numCourses, prerequisites) {
+  let prereq = buildGraph(prerequisites);
+  let totalCourses = Object.keys(prereq).length;
+  let completed = new Set();
+
+  let eligiableCourseExists = true;
+
+  while (eligiableCourseExists) {
+    eligiableCourseExists = false;
+
+    for (let course in prereq) {
+      let everyPreBeenMet = prereq[course].every((pre) => completed.has(pre));
+      if (!completed.has(course) && everyPreBeenMet) {
+        completed.add(course);
+        eligiableCourseExists = true;
+      }
+    }
+  }
+
+  return completed.size === totalCourses;
 }
 
 module.exports = {
