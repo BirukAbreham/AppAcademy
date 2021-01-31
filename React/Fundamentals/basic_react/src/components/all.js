@@ -6,6 +6,7 @@ import Greeting from "./conditional_rendering";
 import Mailbox from "./inline_logical";
 import NumberList from "./list";
 import NameForm from "./forms";
+import Calculator from "./temp_calc";
 
 const All = () => {
   return (
@@ -30,6 +31,9 @@ const All = () => {
 
       <h1>Forms</h1>
       <NameForm />
+
+      <h1>Lifting State Up</h1>
+      <Calculator />
     </div>
   );
 };
