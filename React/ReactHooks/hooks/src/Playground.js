@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 const randomColor = [
   "#fbe831",
@@ -19,7 +19,13 @@ export default function Playground() {
   const [color, setColor] = useState(null);
   useEffect(() => {
     setColor(randomColor[Math.floor(Math.random() * randomColor.length)]);
+    inputRef.current.focus();
   }, [count]); // dependences which trigger effect
+
+  const inputRef = useRef();
+
+  // const calculate = useCallback(<Calculate />, [count]);
+  const callback = useCallback((num) => console.log(num), [count]);
 
   return (
     <div style={{ borderTop: `10px solid ${color}` }}>
@@ -30,6 +36,22 @@ export default function Playground() {
       <button onClick={() => setCount((currentCount) => currentCount + 1)}>
         +
       </button>
+      <hr />
+
+      <input
+        ref={inputRef}
+        type="range"
+        onChange={(event) => setCount(event.target.value)}
+        value={count}
+      />
+      {/* {calculate} */}
+      <Calculate callback={callback} num={count} />
     </div>
   );
+}
+
+function Calculate({ callback }) {
+  callback();
+  const renderCount = useRef(1);
+  return <div>{renderCount.current++}</div>;
 }
