@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Name from "./Name";
 import ColorPicker from "./ColorPicker";
 import WindowSize from "./WindowSize";
 import Canvas from "./Canvas";
+import RefreshButton from "./RefreshButton";
 
 const randomColor = [
   "#fbe831",
@@ -20,7 +21,8 @@ const randomColor = [
 export default function Paint() {
   const [colors, setColors] = useState([]);
   const [activeColor, setActiveColor] = useState(null);
-  const getColors = () => {
+
+  const getColors = useCallback(() => {
     const baseColor =
       randomColor[Math.floor(Math.random() * randomColor.length)];
 
@@ -34,7 +36,8 @@ export default function Paint() {
         setColors(res.colors.map((color) => color.hex.value));
         setActiveColor(res.colors[0].hex.value);
       });
-  };
+  }, []);
+
   useEffect(getColors, []);
 
   const headerRef = useRef({ offsetHeight: 0 });
@@ -54,6 +57,7 @@ export default function Paint() {
             activeColor={activeColor}
             setActiveColor={setActiveColor}
           />
+          <RefreshButton callback={getColors} />
         </div>
       </header>
       {activeColor && (

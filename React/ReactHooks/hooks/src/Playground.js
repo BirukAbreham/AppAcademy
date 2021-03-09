@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 
 const randomColor = [
   "#fbe831",
@@ -26,6 +32,8 @@ export default function Playground() {
 
   // const calculate = useCallback(<Calculate />, [count]);
   const callback = useCallback((num) => console.log(num), [count]);
+  useCallback(() => console.log("useCallback")); // return the function
+  useMemo(() => console.log("useMemo")); // return the result of the function
 
   return (
     <div style={{ borderTop: `10px solid ${color}` }}>
@@ -35,6 +43,13 @@ export default function Playground() {
       </button>
       <button onClick={() => setCount((currentCount) => currentCount + 1)}>
         +
+      </button>
+      <button
+        onClick={() =>
+          setColor(randomColor[Math.floor(Math.random() * randomColor.length)])
+        }
+      >
+        Change Color
       </button>
       <hr />
 
@@ -50,8 +65,8 @@ export default function Playground() {
   );
 }
 
-function Calculate({ callback }) {
-  callback();
+const Calculate = React.memo(({ callback, num }) => {
+  callback(num);
   const renderCount = useRef(1);
   return <div>{renderCount.current++}</div>;
-}
+});

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Name() {
+const Name = React.memo(() => {
   const [name, setName] = useState("");
 
   return (
@@ -15,4 +15,6 @@ export default function Name() {
       />
     </label>
   );
-}
+});
+
+export default Name;
