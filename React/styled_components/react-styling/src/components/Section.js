@@ -22,10 +22,23 @@ const WeekdayTitle = styled.div`
 `;
 
 const WeekendTitle = styled(WeekdayTitle)`
-  border: solid 3px teal;
+  background-color: lightgray;
+  border-radius: 7px 0 0 7px;
 `;
 
-const Section = ({ text }) => {
+const ProgressBar = styled.div`
+  height: 50px;
+  width: ${({ progress }) => progress || "0%"};
+  background-color: ${({ progress }) => {
+    let value = Number(progress.slice(0, -1));
+    if (value > 80) return "green";
+    else if (value < 80 && value > 60) return "orange";
+    else if (value < 60 && value > 35) return "yellow";
+    else return "red";
+  }};
+`;
+
+const Section = ({ text, progress }) => {
   const isWeekend = text === "S";
 
   return (
@@ -33,6 +46,7 @@ const Section = ({ text }) => {
       <StyledSection>
         {!isWeekend && <WeekdayTitle>{text}</WeekdayTitle>}
         {isWeekend && <WeekendTitle>{text}</WeekendTitle>}
+        <ProgressBar progress={progress} />
       </StyledSection>
     </div>
   );

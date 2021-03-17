@@ -20,13 +20,24 @@ const Section = styled.div`
   border-radius: 15px;
 `;
 
+const ParagraphTitle = styled(SubTitle)`
+  color: grey;
+`;
+
+// polymorphic props
+const ReversedTitle = (props) => (
+  <ParagraphTitle {...props} children={props.children.split("").reverse()} />
+);
+
 const Content = () => {
   return (
     <Section>
       <Title>Section</Title>
       <SubTitle>I am a subtitle</SubTitle>
       <Button primary text="me first" />
-      <Button text="me secondary" />
+      <Button text="me secondary" border="solid 3px" />
+
+      <ParagraphTitle as={ReversedTitle}>I am a paragraph title</ParagraphTitle>
     </Section>
   );
 };
