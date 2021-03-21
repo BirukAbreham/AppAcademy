@@ -10,3 +10,4 @@ token.md
 /SQL/Active_Record/DoggyDayCare/
 vscode-keyboard-shortcuts-linux.pdf
 **/node_modules
+**/config/keys.js
